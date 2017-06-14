@@ -1,0 +1,135 @@
+================= Question 1
+#!/usr/bin/perl
+use Data::Dumper;
+my @words=split(/ /,shift);
+our $chars={};
+for($i=0;$i<@words;$i++) {
+    findChars($chars,$words[$i]);
+}
+printHist($chars);
+
+sub printHist() {
+    my $href=shift;
+    foreach my $i ( sort { $href->{$b} cmp $href->{$a} } keys $href ) {
+        print "$i: ";
+        for(my $j=0;$j<$href->{$i};$j++) {
+            $j == $href->{$i} -1  ? print "#":print "# ";
+        }
+        print "\n";
+    }
+}
+
+sub findChars() {
+    my($href,$word)=@_;
+    my @c=split(//,$word);
+    for(my $j=0;$j<@c;$j++) {
+        $href->{$c[$j]}++;
+    }
+}
+
+
+================== 2nd version of question 1
+
+
+#!/usr/bin/perl
+use Data::Dumper;
+our $chars={};
+findChars($chars,shift);
+printHist($chars);
+
+sub printHist() {
+    my $href=shift;
+    foreach my $i ( sort { $href->{$b} cmp $href->{$a} } keys $href ) {
+        print "$i: ";
+        for(my $j=0;$j<$href->{$i};$j++) {
+            $j == $href->{$i} -1  ? print "#":print "# ";
+        }
+        print "\n";
+    }
+}
+
+sub findChars() {
+    my($href,$word)=@_;
+    my @c=split(//,$word);
+    for(my $j=0;$j<@c;$j++) {
+        $href->{$c[$j]}++;
+    }
+}
+
+
+=======================Question 2
+#!/usr/bin/perl
+use Data::Dumper;
+my %last_name=("Mary" => "Li",
+               "James" => "O'Day",
+               "Thomas" => "Miller",
+               "Willam" => "Garcia",
+               "Elizabeth" => "Davis");
+
+foreach my $name ( sort { 
+                           length($last_name{$a}) <=> length($last_name{$b}) 
+                           ||
+                           $a cmp $b 
+                        } keys %last_name ) {
+    print $name," ".$last_name{$name}."\n";
+}
+
+
+=============================Question 3
+#!/usr/bin/perl
+
+$str=shift;
+testBal($str) == 1 ? print "String Balanced\n": print "String not balanced\n";
+
+
+sub testBal() {
+    my($s)=shift;
+    my ( $cnt_1,$cnt_2,$cnt_3,$cnt_4)=(0,0,0,0);
+    my @chars=split(//,$s);
+    for($i=0;$i<@chars;$i++) {
+        if ( $chars[$i] eq "("  ) { $cnt_1++; }
+        if ( $chars[$i] eq ")"  ) { $cnt_2++; }
+        if ( $chars[$i] eq "["  ) { $cnt_3++; }
+        if ( $chars[$i] eq "]"  ) { $cnt_4++; }
+    }
+    $cnt_1 == $cnt_2 && $cnt_3 == $cnt_4 ? return 1: return 0;
+}
+
+========================Question 5
+#!/usr/bin/perl
+open("fh","<data")||die "can't open file\n";
+open("out",">data1")||die "can't open file\n";
+while ( $ch=getc(fh) ) {
+    if ( $ch eq "/" ) {
+         $nextch=getc(fh);
+         if ( $nextch eq "/" ) {
+            $nextch1=getc(fh);
+            if ( $nextch1 eq " " ) {
+                seek(fh,-3,1);
+                $ch2=getc(fh);
+                while($ch2 ne "\n") {
+                    $ch2=getc(fh);
+                }
+                print out $ch2;
+            }
+         }
+    }
+    else {
+        print out $ch;
+    }
+}
+close(fh);
+close(out);
+
+======= input data for Question 5
+// this is a comment
+{ // another comment
+   true, "foo", // 3rd comment
+   "http://www.ariba.com" // comment after URL
+}
+
+======= output data for Question 5
+{ 
+   true, "foo", 
+   "http:ww.ariba.com" 
+}
