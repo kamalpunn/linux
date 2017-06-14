@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 use Data::Dumper;
+# hash of first name and last name
 my %last_name=("Mary" => "Li",
                "James" => "O'Day",
                "Thomas" => "Miller",

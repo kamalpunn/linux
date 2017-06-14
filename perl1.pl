@@ -7,6 +7,7 @@ if ( ++$#ARGV != 1 ) {
 }
 my @words=split(/ +/,shift);
 our $chars={};
+# finding chars
 for(my $i=0;$i<@words;$i++) {
     findChars($chars,$words[$i]);
 }
